@@ -49,11 +49,7 @@ public class SmartLock extends Device {
         if (command.startsWith("UNLOCK")) {
             String[] parts = command.split(" ");
             String pin = (parts.length > 1) ? parts[1] : null;
-            try {
-                validatePin(pin);
-            } catch (InvalidCommandException e) {
-               logger.error(e.getMessage());
-            }
+            validatePin(pin);
         } else if (command.equals("LOCK")) {
             lock();
         } else if (command.equals("TURN_ON")) {

@@ -54,7 +54,7 @@ public class SmartLight extends Device {
      */
     public void setBrightness(int level) throws InvalidValueException {
         if (level < 0 || level > 100) {
-            throw new InvalidValueException("level", this, "is outside [0, 100]");
+            throw new InvalidValueException("level", level, "is outside [0, 100]");
         }
         this.brightness = level;
         System.out.println(getName() + " brightness set to " + level + "%");

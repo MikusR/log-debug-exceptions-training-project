@@ -2,7 +2,6 @@ package com.bootcamp.smarthome.controller;
 
 import com.bootcamp.smarthome.device.Device;
 import com.bootcamp.smarthome.exception.HomeAutomationException;
-import com.bootcamp.smarthome.exception.InvalidValueException;
 
 /**
  * Central hub that manages all registered smart devices.

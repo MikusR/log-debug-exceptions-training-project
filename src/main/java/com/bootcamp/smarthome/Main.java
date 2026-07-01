@@ -62,7 +62,11 @@ public class Main {
         frontDoor.validatePin("4321"); // should print "Front Door Lock unlocked successfully."
 
         System.out.println("\n=== Scenario 6: Unlock with null PIN ===");
-        controller.sendCommand("LOCK_02 UNLOCK");
+        try {
+            controller.sendCommand("LOCK_02 UNLOCK");
+        } catch (HomeAutomationException e) {
+            System.out.println("Handle: " + e.getMessage());
+        }
 
         System.out.println("\n=== Scenario 7: Find non-existent device ===");
         controller.sendCommand("SENSOR_99 TURN_ON");

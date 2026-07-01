@@ -88,8 +88,8 @@ public class HomeController {
                 return;
             }
             device.executeCommand(command);
-        } catch (InvalidValueException e) {
-            throw new HomeAutomationException("Command '" + fullCommand + "' failed for device '" + deviceId + "'");
+        } catch (HomeAutomationException e) {
+            throw new HomeAutomationException("Command '" + fullCommand + "' failed for device '" + deviceId + "'", e);
         } finally {
             System.out.println("Command processing ended for device " + deviceId);
         }

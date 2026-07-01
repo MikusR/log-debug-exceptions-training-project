@@ -44,7 +44,11 @@ public class Main {
         // This test calls setTemperature() directly to isolate temperature validation.
         Device found = controller.findDevice("THERMO_01");
         SmartThermostat mainThermostat = (SmartThermostat) found;
-        mainThermostat.setTemperature(99.0);
+        try {
+            mainThermostat.setTemperature(99.0);
+        } catch (HomeAutomationException e) {
+            System.out.println("Handle: " + e.getMessage());
+        }
 
         System.out.println("\n=== Scenario 4: Offline device ===");
         // LIGHT_03 is offline — command should be skipped with a warning

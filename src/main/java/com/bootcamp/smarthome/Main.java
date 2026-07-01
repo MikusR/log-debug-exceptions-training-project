@@ -5,6 +5,7 @@ import com.bootcamp.smarthome.device.Device;
 import com.bootcamp.smarthome.device.SmartLight;
 import com.bootcamp.smarthome.device.SmartLock;
 import com.bootcamp.smarthome.device.SmartThermostat;
+import com.bootcamp.smarthome.exception.DeviceNotFoundException;
 import com.bootcamp.smarthome.exception.HomeAutomationException;
 
 /**
@@ -47,12 +48,16 @@ public class Main {
         try {
             mainThermostat.setTemperature(99.0);
         } catch (HomeAutomationException e) {
-            System.out.println("Handle: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         System.out.println("\n=== Scenario 4: Offline device ===");
         // LIGHT_03 is offline — command should be skipped with a warning
-        controller.sendCommand("LIGHT_03 TURN_ON");
+        try {
+            controller.sendCommand("LIGHT_03 TURN_ON");
+        } catch (HomeAutomationException e) {
+           System.out.println(e.getMessage());
+        }
 
         System.out.println("\n=== Scenario 5: Unlock with correct PIN ===");
         // Direct call to validatePin() to demonstrate intended correct behaviour
@@ -65,11 +70,15 @@ public class Main {
         try {
             controller.sendCommand("LOCK_02 UNLOCK");
         } catch (HomeAutomationException e) {
-            System.out.println("Handle: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         System.out.println("\n=== Scenario 7: Find non-existent device ===");
-        controller.sendCommand("SENSOR_99 TURN_ON");
+        try {
+            controller.sendCommand("SENSOR_99 TURN_ON");
+        } catch (HomeAutomationException | DeviceNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n=== All scenarios complete ===");
         controller.printAllDevices();

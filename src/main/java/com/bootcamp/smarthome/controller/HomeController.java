@@ -1,6 +1,8 @@
 package com.bootcamp.smarthome.controller;
 
 import com.bootcamp.smarthome.device.Device;
+import com.bootcamp.smarthome.exception.DeviceNotFoundException;
+import com.bootcamp.smarthome.exception.DeviceOfflineException;
 import com.bootcamp.smarthome.exception.HomeAutomationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,26 +78,27 @@ public class HomeController {
         String deviceId = null;
         try {
             deviceId = CommandParser.extractDeviceId(fullCommand);
-            logger.debug("Device id: {} command {}", deviceId, fullCommand);
+            logger.debug("Device id: '{}' command '{}'", deviceId, fullCommand);
             String command = CommandParser.extractCommand(fullCommand);
 
             Device device = findDevice(deviceId);
 
             if (device == null) {
-                logger.error("Device not found: {}", deviceId);
-                return;
+               logger.error("Device not found: '{}'", deviceId);
+               throw new DeviceNotFoundException("Device '" + deviceId + "' not found");
             }
 
             if (!device.isOnline()) {
                 logger.warn("WARNING: Device '{}' is offline — command skipped.", deviceId);
-                return;
+                throw new DeviceOfflineException("Device '" + deviceId + "' is offline");
             }
             device.executeCommand(command);
-            logger.info("Device '{}' command {} executed successfully", deviceId, command);
+            logger.info("Device '{}' command '{}' executed successfully", deviceId, command);
         } catch (HomeAutomationException e) {
-            logger.error("Device '{}' command {} failed: {}", deviceId, fullCommand, e.getMessage());
+            logger.error("Device '{}' command '{}' failed: '{}'", deviceId, fullCommand, e.getMessage());
+            throw new HomeAutomationException("Command '" + fullCommand + "' failed for device '" + deviceId + "'" + e.getMessage());
         } finally {
-            logger.debug("Command processing ended for device {}", deviceId);
+            logger.debug("Command processing ended for device '{}'", deviceId);
         }
     }
 

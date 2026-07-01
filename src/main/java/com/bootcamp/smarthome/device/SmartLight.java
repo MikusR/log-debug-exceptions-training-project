@@ -4,15 +4,13 @@ import com.bootcamp.smarthome.exception.InvalidValueException;
 
 /**
  * A dimmable smart light bulb.
- * <p>
+ *
  * Supports brightness control in the range [0, 100] where
  * 0 = fully off (dimmed) and 100 = fully bright.
  */
 public class SmartLight extends Device {
 
-    /**
-     * Brightness level. Valid range: 0–100 inclusive.
-     */
+    /** Brightness level. Valid range: 0–100 inclusive. */
     private int brightness;
 
     public SmartLight(String deviceId, String name, boolean isOnline) {
@@ -23,6 +21,19 @@ public class SmartLight extends Device {
     // -------------------------------------------------------------------------
     // Device-specific behaviour
     // -------------------------------------------------------------------------
+
+    /**
+     * Sets the brightness of this light.
+     *
+     * Valid range: 0–100 inclusive.
+     */
+    public void setBrightness(int level) throws InvalidValueException {
+        if (level < 0 || level > 100) {
+            throw new InvalidValueException("level", level, "is outside [0, 100]");
+        }
+        this.brightness = level;
+        System.out.println(getName() + " brightness set to " + level + "%");
+    }
 
     @Override
     public void executeCommand(String command) throws InvalidValueException {
@@ -39,25 +50,12 @@ public class SmartLight extends Device {
         }
     }
 
-    public int getBrightness() {
-        return brightness;
-    }
-
     // -------------------------------------------------------------------------
     // Getters
     // -------------------------------------------------------------------------
 
-    /**
-     * Sets the brightness of this light.
-     * <p>
-     * Valid range: 0–100 inclusive.
-     */
-    public void setBrightness(int level) throws InvalidValueException {
-        if (level < 0 || level > 100) {
-            throw new InvalidValueException("level", level, "is outside [0, 100]");
-        }
-        this.brightness = level;
-        System.out.println(getName() + " brightness set to " + level + "%");
+    public int getBrightness() {
+        return brightness;
     }
 
     @Override

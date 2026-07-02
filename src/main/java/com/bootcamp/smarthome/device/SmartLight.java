@@ -1,6 +1,9 @@
 package com.bootcamp.smarthome.device;
 
+import com.bootcamp.smarthome.exception.InvalidCommandException;
 import com.bootcamp.smarthome.exception.InvalidValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A dimmable smart light bulb.
@@ -9,7 +12,7 @@ import com.bootcamp.smarthome.exception.InvalidValueException;
  * 0 = fully off (dimmed) and 100 = fully bright.
  */
 public class SmartLight extends Device {
-
+    private static final Logger logger = LoggerFactory.getLogger(SmartLight.class);
     /** Brightness level. Valid range: 0–100 inclusive. */
     private int brightness;
 
@@ -32,11 +35,11 @@ public class SmartLight extends Device {
             throw new InvalidValueException("level", level, "is outside [0, 100]");
         }
         this.brightness = level;
-        System.out.println(getName() + " brightness set to " + level + "%");
+        logger.info("{} brightness set to {}%",getName(), level);
     }
 
     @Override
-    public void executeCommand(String command) throws InvalidValueException {
+    public void executeCommand(String command) throws InvalidValueException, InvalidCommandException {
         if (command.startsWith("SET_BRIGHTNESS")) {
             String[] parts = command.split(" ");
             int level = (parts.length > 1) ? Integer.parseInt(parts[1]) : 50;
@@ -46,7 +49,7 @@ public class SmartLight extends Device {
         } else if (command.equals("TURN_OFF")) {
             turnOff();
         } else {
-            System.out.println("Unknown command for SmartLight '" + getName() + "': " + command);
+            throw new InvalidCommandException("Unknown command for SmartLight '" + getName() + "': " + command);
         }
     }
 

@@ -40,7 +40,7 @@ public class HomeController {
         }
         devices[deviceCount] = device;
         deviceCount++;
-        System.out.println("Device registered: " + device);
+        logger.info("Device registered: '{}'", device);
     }
 
     // -------------------------------------------------------------------------

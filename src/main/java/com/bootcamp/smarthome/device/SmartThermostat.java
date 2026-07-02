@@ -1,6 +1,10 @@
 package com.bootcamp.smarthome.device;
 
+import com.bootcamp.smarthome.Main;
+import com.bootcamp.smarthome.exception.InvalidCommandException;
 import com.bootcamp.smarthome.exception.InvalidValueException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A programmable smart thermostat.
@@ -9,7 +13,7 @@ import com.bootcamp.smarthome.exception.InvalidValueException;
  * The valid operating range is 10.0 °C to 35.0 °C (inclusive).
  */
 public class SmartThermostat extends Device {
-
+    private static final Logger logger = LoggerFactory.getLogger(SmartThermostat.class);
     /** Current target temperature in Celsius. Valid range: 10.0–35.0 inclusive. */
     private double temperature;
 
@@ -32,11 +36,11 @@ public class SmartThermostat extends Device {
             throw new InvalidValueException("temp", temp, "Must be between 10.0 and 35.0.");
         }
         this.temperature = temp;
-        System.out.println(getName() + " temperature set to " + temp + " °C");
+        logger.info("{} temperature set to {} °C", getName(), temp);
     }
 
     @Override
-    public void executeCommand(String command) throws InvalidValueException {
+    public void executeCommand(String command) throws InvalidCommandException, InvalidValueException {
         if (command.startsWith("SET_TEMP")) {
             String[] parts = command.split(" ");
             double temp = (parts.length > 1) ? Double.parseDouble(parts[1]) : 20.0;
@@ -46,7 +50,7 @@ public class SmartThermostat extends Device {
         } else if (command.equals("TURN_OFF")) {
             turnOff();
         } else {
-            System.out.println("Unknown command for SmartThermostat '" + getName() + "': " + command);
+            throw new InvalidCommandException("Unknown command for SmartThermostat '" + getName() + "':z " + command);
         }
     }
 

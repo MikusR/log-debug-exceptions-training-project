@@ -7,6 +7,8 @@ import com.bootcamp.smarthome.device.SmartLock;
 import com.bootcamp.smarthome.device.SmartThermostat;
 import com.bootcamp.smarthome.exception.DeviceNotFoundException;
 import com.bootcamp.smarthome.exception.HomeAutomationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Entry point for the Smart Home Controller demo.
@@ -15,6 +17,7 @@ import com.bootcamp.smarthome.exception.HomeAutomationException;
  * exercise normal operation as well as edge cases and error conditions.
  */
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws HomeAutomationException {
 
@@ -48,7 +51,7 @@ public class Main {
         try {
             mainThermostat.setTemperature(99.0);
         } catch (HomeAutomationException e) {
-            System.out.println(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         System.out.println("\n=== Scenario 4: Offline device ===");
@@ -56,7 +59,7 @@ public class Main {
         try {
             controller.sendCommand("LIGHT_03 TURN_ON");
         } catch (HomeAutomationException e) {
-           System.out.println(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         System.out.println("\n=== Scenario 5: Unlock with correct PIN ===");
@@ -70,14 +73,14 @@ public class Main {
         try {
             controller.sendCommand("LOCK_02 UNLOCK");
         } catch (HomeAutomationException e) {
-            System.out.println(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         System.out.println("\n=== Scenario 7: Find non-existent device ===");
         try {
             controller.sendCommand("SENSOR_99 TURN_ON");
         } catch (HomeAutomationException | DeviceNotFoundException e) {
-            System.out.println(e.getMessage());
+            logger.debug(e.getMessage());
         }
 
         System.out.println("\n=== All scenarios complete ===");

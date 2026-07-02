@@ -41,7 +41,7 @@ public class SmartLock extends Device {
 
     public void lock() {
         isLocked = true;
-        System.out.println(getName() + " locked.");
+        logger.info("'{}' locked.", getName());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SmartLock extends Device {
         } else if (command.equals("TURN_OFF")) {
             turnOff();
         } else {
-            System.out.println("Unknown command for SmartLock '" + getName() + "': " + command);
+            throw new InvalidCommandException("Unknown command for SmartLock '" + getName() + "': " + command);
         }
     }
 

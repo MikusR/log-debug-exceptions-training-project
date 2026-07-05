@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Prior knowledge required: abstract classes, encapsulation, inheritance.
  */
 public abstract class Device {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String deviceId;
     private final String name;

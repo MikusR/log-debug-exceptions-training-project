@@ -50,7 +50,7 @@ public class SmartThermostat extends Device {
         } else if (command.equals("TURN_OFF")) {
             turnOff();
         } else {
-            throw new InvalidCommandException("Unknown command for SmartThermostat '" + getName() + "':z " + command);
+            throw new InvalidCommandException("Unknown command for SmartThermostat '" + getName() + "': " + command);
         }
     }
 
